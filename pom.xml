@@ -8,10 +8,36 @@
     <artifactId>java-stack</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/liudong200618/java-stack.git</url>
+        <connection>https://github.com/liudong200618/java-stack.git</connection>
+        <developerConnection>https://github.com/liudong200618</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>jaydon</name>
+            <email>liudong200618@163.com</email>
+        </developer>
+    </developers>
+
     <modules>
         <module>springboot-async</module>
         <module>springboot-event</module>
+        <module>springboot-aop</module>
+        <module>tools-hutool</module>
+        <module>springboot-uid-generator</module>
     </modules>
+
 
 
 </project>

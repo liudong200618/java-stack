@@ -5,3 +5,8 @@
 /springboot-async/target
 /springboot-event/target
 /springboot-event/springboot-event.iml
+/springboot-aop/target
+/springboot-aop/springboot-aop.iml
+/springboot-uid-generator/target
+/springboot-uid-generator/logs
+/springboot-uid-generator/springboot-uid-generator.iml
