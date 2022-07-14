@@ -1,0 +1,28 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/flyway?useUnicode=true&characterEncoding=UTF8&useSSL=false&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: root
+    password: eastcompeace
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+#    baseline-description: Flyway Baseline #对执行迁移时基准版本的描述.
+#    baseline-on-migrate: false #当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.
+#    baseline-version: 1 #开始执行基准迁移时对现有的schema的版本打标签，默认值为1.
+#    check-location: true #检查迁移脚本的位置是否存在，默认false.
+#    clean-on-validation-error: false #当发现校验错误时是否自动调用clean，默认false.
+#    enabled: true #是否开启flywary，默认true.
+    encoding: ISO_8859_1 #设置迁移时的编码，默认UTF-8. ISO_8859_1
+#    init-sqls: #当初始化好连接时要执行的SQL.
+#    locations: classpath:db/migration #迁移脚本的位置，默认db/migration.
+#    out-of-order: false #是否允许无序的迁移，默认false.
+#    placeholders.[placeholder name]: #设置placeholder的value
+#    schemas: #设定需要flywary迁移的schema，大小写敏感，默认为连接默认的schema.
+#    sql-migration-prefix: V #迁移文件的前缀，默认为V.
+#    sql-migration-separator: _ #迁移脚本的文件名分隔符，默认__
+#    target: #迁移时使用的目标版本，默认为latest version
+#    url: jdbc:mysql://127.0.0.1:3306/flyway #迁移时使用的JDBC URL，如果没有指定的话，将使用配置的主数据源
+#    user: root #迁移数据库的用户名
+#    password: eastcompeace #目标数据库的密码.
+#    validate-on-migrate: true #迁移时是否校验，默认为true
+#    cleanDisabled: false

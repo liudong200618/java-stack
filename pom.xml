@@ -36,6 +36,7 @@
         <module>springboot-aop</module>
         <module>tools-hutool</module>
         <module>springboot-uid-generator</module>
+        <module>springboot-flyway</module>
     </modules>
 
 

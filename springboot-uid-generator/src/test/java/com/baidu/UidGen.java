@@ -47,7 +47,6 @@ public class UidGen {
         // Parse UID into [Timestamp, WorkerId, Sequence]
         // {"UID":"450795408770","timestamp":"2019-02-20 14:55:39","workerId":"27","sequence":"2"}
         System.out.println(defaultUidGenerator.parseUID(uid));
-
     }
 
     @Test
