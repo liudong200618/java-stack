@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   flyway:
 #    baseline-description: Flyway Baseline #对执行迁移时基准版本的描述.
-#    baseline-on-migrate: false #当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.
+#    baseline-on-migrate: false #当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，新建schema_version表,默认false.
 #    baseline-version: 1 #开始执行基准迁移时对现有的schema的版本打标签，默认值为1.
 #    check-location: true #检查迁移脚本的位置是否存在，默认false.
 #    clean-on-validation-error: false #当发现校验错误时是否自动调用clean，默认false.

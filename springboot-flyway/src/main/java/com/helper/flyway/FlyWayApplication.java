@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 
+/**
+ * @author jaydon
+ */
 @SpringBootApplication()
 public class FlyWayApplication {
     public static void main(String[] args) {
