@@ -5,6 +5,9 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
+/**
+ * @author jaydon
+ */
 @Configuration
 @Slf4j
 public class EvenConfig {

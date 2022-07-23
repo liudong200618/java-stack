@@ -1,0 +1,5 @@
+# 注册自定义的FailureAnalyzer
+org.springframework.boot.diagnostics.FailureAnalyzer=\
+com.helper.flyway.analyzer.NullPointerFailureAnalyzer,\
+com.helper.flyway.analyzer.IllegalArgumentFailureAnalyzer,\
+com.helper.flyway.analyzer.UnknownFailureAnalyzer  

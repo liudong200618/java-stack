@@ -1,0 +1,2 @@
+# ×¢²á×Ô¼ºµÄ¼àÌıÆ÷
+org.springframework.context.ApplicationListener=com.helper.spring.boot.even.listener6.MyListener

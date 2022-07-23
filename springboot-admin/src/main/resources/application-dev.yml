@@ -1,0 +1,39 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/flyway?useUnicode=true&characterEncoding=UTF8&useSSL=false&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: root
+    password: eastcompeace
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  application:
+    name: Admin Client
+  boot:
+    admin:
+      client:
+        url: http://localhost:7077
+
+
+
+  arthas:
+    enabled: true
+management.endpoints.web.exposure.include: '*'
+
+
+# arthas tunnel server配置
+arthas:
+  # -1:则不监听telnet端口。0:随机端口
+  telnetPort: 3658
+  # -1: 不监听http端口。0:随机端口
+  httpPort: 8563
+  agent-id: jaydon
+  #  127.0.0.1只能本地访问，0.0.0.0则可网络访问，但是存在安全问题
+  ip: 0.0.0.0
+  # appName
+  appName: arthas-app
+  # tunnel-server地址
+  tunnel-server: ws://172.18.30.108:7878/ws
+  # seconds
+  sessionTimeout: 1800
+  # 禁掉stop 和 dump 命令
+  disabledCommands: stop,dump

@@ -1,0 +1,29 @@
+server:
+  port: 7077
+#  servlet:
+#    context-path: /server
+#    session:
+#      timeout: 3600s
+  tomcat:
+    uri-encoding: utf-8
+
+spring:
+  application:
+    name: springboot-admin
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+    generator:
+      # 数字类型是接口json中转换成字符串
+      write_numbers_as_strings: true
+
+
+
+# 输出sql日志
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ./logs
+  level:
+    com: INFO

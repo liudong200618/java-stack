@@ -13,3 +13,8 @@
 /springboot-flyway/springboot-flyway.iml
 /springboot-flyway/target
 /springboot-flyway/logs
+/out
+/springboot-admin/target
+/springboot-admin/springboot-admin.iml
+/arthas-output
+/tools-hutool/target
