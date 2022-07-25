@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- *
+ *Spring Boot Admin 是一个针对 Spring Boot 的 Actuator 接口进行 UI 美化封装的监控工具
  * https://developer.aliyun.com/article/826593
  *
  * @author jaydon

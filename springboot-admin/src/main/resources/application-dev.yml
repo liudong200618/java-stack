@@ -11,21 +11,26 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:7077
+        url: http://localhost:7077  # 注册到admin server
+
 
 
 
   arthas:
     enabled: true
-management.endpoints.web.exposure.include: '*'
 
+#  security:
+#    user:
+#      name: admin
+#      password: 123456
+#      roles: admin
 
 # arthas tunnel server配置
 arthas:
   # -1:则不监听telnet端口。0:随机端口
-  telnetPort: 3658
+  telnetPort: 3659
   # -1: 不监听http端口。0:随机端口
-  httpPort: 8563
+  httpPort: 9563
   agent-id: jaydon
   #  127.0.0.1只能本地访问，0.0.0.0则可网络访问，但是存在安全问题
   ip: 0.0.0.0
@@ -37,3 +42,33 @@ arthas:
   sessionTimeout: 1800
   # 禁掉stop 和 dump 命令
   disabledCommands: stop,dump
+
+# ### spring admin Actuator ###
+#自定义配置信息用于"/actuator/info"读取
+info:
+  name: 老王
+  age: 100
+  phone: 110
+
+# 默认只开放了 health、info两个节点
+#
+##通过下面的配置启用所有的监控端点，默认情况下，这些端点是禁用的；
+# "*" 代表暴露所有的端点 如果指定多个端点，用","分开
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    #  base-path: /  # 每次都要加个actuator前缀太麻烦，改变端点前缀路径
+
+
+  endpoint:
+    health:
+      show-details: always # health方法是不显示具体的内容的
+
+    #可以关闭指定的端点
+    shutdown:
+      enabled: true
+
+    httptrace:
+      enabled: true  # 启用httptrace端点
