@@ -1,0 +1,70 @@
+
+server支持的parameters如下：
+
+weight=number #设置权重，默认为1，.weight越大，负载的权重就越大。
+max_conns=number #给当前server设置最大活动链接数，默认为0表示没有限制。
+max_fails=number #对后端服务器连续监测失败多少次就标记为不可用。 允许请求失败的次数默认为1.当超过最大次数时，返回 proxy_next_upstream 模块定义的错误
+fail_timeout=time #对后端服务器的单次监测超时时间，默认为10秒。max_fails 次失败后，暂停fail_timeout时间
+backup #设置为备份服务器，当所有服务器不可用时将重新启用次服务器。其它所有的非backup机器down或者忙的时候，请求backup机器，所以这台机器压力会最轻。
+down #标记为down状态。表示当前的server暂时不参与负载
+resolve #当server定义的是主机名的时候，当A记录发生变化会自动应用新IP而不用重启Nginx。
+
+==================================
+实现sessionid固定保证访问一个网址：
+
+	upstream  websrv{
+         server 192.168.37.17:80;
+         server 192.168.37.37:80;
+         hash $cookie_sessionid;                                                                                                                
+      }
+	  
+	   upstream  websrv{
+         server 192.168.37.17:80;
+         server 192.168.37.37:80 down;   加入down，就会将此主机进行宕机处理。                                                                                                       
+      }
+==================================
+调度算法
+ip_hash 源地址hash调度方法，基于的客户端的remote_addr(源地址)做hash计算，以实现会话保持。
+least_conn 最少连接调度算法，当server拥有不同的权重时其为wlc，当所有后端主机连接数相同时，则使用wrr，适用于长连接，调度到最少连接的后端服务器上。
+ 
+hash key [consistent] 基于指定的key的hash表来实现对请求的调度，此处的key可以直接文本、变量或二者组合。
+作用：将请求分类，同一类请求将发往同一个upstream server，使用consistent参数，将使用ketama一致性hash算法，适用于后端是Cache服务器（如varnish）时使用。所谓取模运算，就是计算两个数相除之后的余数，比如10%7=3, 7%4=3
+ 
+hash $request_uri consistent;  #基于用户请求的uri做hash，一致性hash算法
+hash $remote_addr;
+hash $cookie_name; #key为name的cookie
+keepalive 连接数N;
+为每个worker进程保留的空闲的长连接数量，可节约nginx端口，并减少连接管理的消耗
+
+==================================
+   upstream  websrv{
+         server 192.168.37.17:80;
+         server 192.168.37.37:80 down;   加入down，就会将此主机进行宕机处理。                                                                                                       
+      }
+	  
+==================================	  
+实现道歉功能：
+将nginx服务器端的配置文件进行修改：vim /etc/nginx/nginx.conf，80端口被占用，最好不要指定80端口
+upstream  websrv{
+   server 192.168.37.17:80;
+   server 192.168.37.37:80;
+   server 127.0.0.1:8080 backup;                                                                                                          
+}
+
+ 在vim /etc/nginx/conf.d/test.conf配置文件中修改配置文件，当后端httpd都宕机之后，就会显示/data/site2里边的文件，作为道歉显示。
+ server  {
+    listen 8080;                                                                                                                                
+    #server_name www.magedu.org;
+    root /data/site2/;
+    ssl_certificate /etc/nginx/ssl/magedu.org.crt;
+    ssl_certificate_key /etc/nginx/ssl/magedu.org.key;
+    ssl_session_cache shared:sslcache:20m;
+    ssl_session_timeout 10m;                                                                                                                    
+    access_log  /var/log/nginx/magedu_org.access_json.log  main;
+    valid_referers none block server_names *.magedu.com  ~\.google\. ~\.baidu\.;
+    if ($invalid_referer) {
+    return 403 "Forbidden Access";
+    }
+}
+==================================	
+ 

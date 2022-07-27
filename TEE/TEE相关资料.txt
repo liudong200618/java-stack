@@ -1,0 +1,31 @@
+https://optee.readthedocs.io/en/latest/general/about.html
+
+https://github.com/OP-TEE/optee_os
+
+
+https://www.trustedfirmware.org/
+
+
+https://trustedfirmware-a.readthedocs.io/en/latest/about/acknowledgements.html
+
+
+https://blog.csdn.net/zxpblog/article/details/107410971
+OTP One-Time Programmable  一次性可编程
+ATF        Arm Trusted Firmware  arm可信固件
+
+
+https://www.xda-developers.com/google-remote-key-provisioning/
+
+
+
+https://www.linaro.org/blog/op-tee-and-the-need-for-ff-a/
+
+
+
+
+https://www.trustedfirmware.org/blog/TF-OPTEE-Release-3-18-0/
+
+
+玩转OP-TEE
+https://community.arm.com/cn/b/blog/posts/op-tee
+

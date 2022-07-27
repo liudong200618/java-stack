@@ -1,0 +1,99 @@
+
+upstream mall_biz_api {
+    # ip_hash
+    hash $remote_addr consistent;
+    server 192.168.115.31:8011 weight=10 max_fails=5 fail_timeout=5s;
+    server 192.168.115.32:8011 weight=10 max_fails=5 fail_timeout=5s;
+}
+
+# 如果超过连接数返回 519状态码
+limit_conn_status 519;
+# 如果超过限流返回 419状态码
+limit_req_status  419;
+
+limit_conn_zone $binary_remote_addr zone=perip:10m;
+limit_conn_zone $server_name zone=perserver:10m;
+
+limit_req_zone $binary_remote_addr zone=keyreq:10m rate=200r/s;
+limit_req_zone $binary_remote_addr zone=firstpage:10m rate=200r/s;
+limit_req_zone $binary_remote_addr zone=apply:10m rate=200r/s;
+limit_req_zone $binary_remote_addr zone=index:10m rate=200r/s;
+
+server {
+    listen        443 ssl;
+    #listen       [::]:443 ssl;
+    server_name   0.0.0.0;
+    server_tokens off;
+
+    charset       utf-8;
+
+
+    #deny 39.98.131.249;    
+    ssl_certificate /etc/nginx/ssl/mall.com.pem;
+    ssl_certificate_key /etc/nginx/ssl/mall.com.key;
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout 10m;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+
+
+    # 并发连接限制，限制每个客户端IP的最大并发连接数
+    limit_conn  perip  100;
+    # 限制该服务提供的总连接数                                   
+    limit_conn perserver 1000;
+
+    # root
+    location / {
+        index      index.htm index.html default.htm default.html;
+        autoindex  on;
+
+        alias      /data/webapps/root/;
+        limit_req zone=firstpage burst=5 nodelay;
+    }
+
+
+    location /web/apply {
+        index      index.htm index.html default.htm default.html;
+        autoindex  on;
+
+        alias     /data/webapps/mall/;
+        limit_req zone=apply burst=5 nodelay;
+    }
+    location /web/ {
+        index      index.htm index.html default.htm default.html;
+        autoindex  on;
+
+        alias     /data/webapps/mall/;
+        limit_req zone=index burst=5 nodelay;
+    }
+	
+    location /biz/v1/ {
+        index      index.htm index.html default.htm default.html;
+        autoindex  on;
+        proxy_connect_timeout 5s;
+        proxy_send_timeout 5s;
+        # 上游服务器响应超过三秒就返回
+        proxy_read_timeout 5s;
+        proxy_pass_header Server;
+        proxy_next_upstream error timeout http_500 non_idemponent;
+        proxy_pass http://mall_biz_api/mall/biz/;
+        limit_req zone=keyreq burst=1 nodelay;
+        #proxy_redirect http://mall_biz_api/mall/biz /biz/v1;
+    }
+	
+	# 如果超过限流返回 419 页面，页面里面存放json字符串
+	# /data/webapps/root/419.html
+	error_page 419 /419.html;
+    location /419.html {
+       root    /data/webapps/root/;
+    }
+
+	# 如果超过限流返回 519 页面，页面里面存放json字符串
+	# /data/webapps/root/519.html
+    error_page 519 /519.html;
+    location /519.html {
+       root    /data/webapps/root/;
+    }
+
+

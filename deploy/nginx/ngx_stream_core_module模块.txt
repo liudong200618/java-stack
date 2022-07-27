@@ -1,0 +1,92 @@
+实现工作于传输层的反代理或调度器（用法不多）
+
+ngx_stream_core_module模块
+模拟反代基于tcp或udp的服务连接，即工作于传输层的反代或调度器
+
+stream { ... }
+定义stream相关的服务；Context:main 
+
+
+
+stream {
+  upstream mysqlsrvs {
+    server 192.168.8.2:3306;
+    server 192.168.8.3:3306;
+    least_conn;
+}
+ server {
+    listen 10.1.0.6:3306;
+    proxy_pass mysqlsrvs;
+  }
+}
+
+
+ngx_stream_proxy_module模块
+可实现代理基于TCP，UDP (1.9.13), UNIX-domain sockets的数据流
+ 
+proxy_pass address;
+指定后端服务器地址
+ 
+proxy_timeout timeout;
+无数据传输时，保持连接状态的超时时长
+默认为10m
+ 
+proxy_connect_timeout time;
+设置nginx与被代理的服务器尝试建立连接的超时时长
+默认为60s
+
+1、在nginx服务器主配置文件中添加TCP和UDP协议。
+
+[root@centos27~]#vim /etc/nginx/nginx.conf
+stream {
+   upstream mysqlsrvs {
+        server 192.168.37.17:3306;  mysql1数据库
+        server 192.168.37.37:3306;  mysql2数据库
+        least_conn;
+        }
+   server {
+        listen 192.168.37.27:3306;  nginx服务器
+        proxy_pass mysqlsrvs;
+        }
+}
+
+tcp负载均衡配置参数
+
+stream { #定义stream
+　upstream backend { #定义后端服务器
+　　hash $remote_addr consistent; #定义调度算法
+　　server backend1.example.com:12345 weight=5; #定义具体server
+　　server 127.0.0.1:12345 max_fails=3 fail_timeout=30s;
+　　server unix:/tmp/backend3;
+　}
+ 
+ upstream dns { #定义后端服务器
+　　server 192.168.0.1:53535; #定义具体server
+　　server dns.example.com:53;
+　}
+ 
+ server { #定义server
+　　listen 12345; #监听IP:PORT
+　　proxy_connect_timeout 1s; #连接超时时间
+　　proxy_timeout 3s; #转发超时时间
+　　proxy_pass backend; #转发到具体服务器组
+　}
+ 
+ server {
+　　listen 127.0.0.1:53 udp reuseport;
+　　proxy_timeout 20s;
+　　proxy_pass dns;
+ }
+ 
+ server {
+　　listen [::1]:12345;
+　　proxy_pass unix:/tmp/stream.socket;
+ }
+}
+
+
+
+
+
+
+

@@ -38,6 +38,7 @@
         <module>springboot-uid-generator</module>
         <module>springboot-flyway</module>
         <module>springboot-admin</module>
+        <module>jvm-sandbox-module</module>
     </modules>
 
 

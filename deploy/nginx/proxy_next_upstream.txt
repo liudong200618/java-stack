@@ -1,0 +1,118 @@
+ 
+ 使用proxy_next_upstream来对后端失效进行容错
+=================
+需求:
+测试nginx容灾:期望上游服务器响应超时后nginx可以把请求分发给另一个上游服务器
+测试结果:
+proxy_next_upstream 不起作用
+原因:
+nginx版本问题， 使用1.8.6版本就可以正常使用了
+我使用的版本是 nginx/1.22.0
+================
+ 
+#user  nobody;
+worker_processes  auto;
+error_log  logs/error.log  info;
+pid        logs/nginx.pid;
+ 
+events {
+    worker_connections  1024;
+}
+ 
+ 
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+ 
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+ 
+    access_log  logs/access.log  main;
+ 
+    sendfile        on;
+    #tcp_nopush     on;
+ 
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+ 
+    #gzip  on;
+ 
+    #设定负载均衡的服务器列表
+    upstream minds {
+        #weight为服务器权重,权值越高被分配到的几率越大,max_fails最大超时次数,fail_timeout服务器代理被挂起的时间
+        #ip_hash;
+        server 192.168.2.117:8080 weight=1 max_fails=2 fail_timeout=30s;
+        server 127.0.0.1:8080 weight=99 max_fails=2 fail_timeout=30s;
+    }
+ 
+    server {
+        listen       8020;
+        server_name  127.5.5.5;
+ 
+        location / {
+            root   html;
+            index  index.html index.htm;
+ 
+            proxy_pass       http://minds;
+            #proxy_redirect off;
+            # 后端的Web服务器可以通过X-Forwarded-For获取用户真实IP
+            proxy_set_header  Host  $host;
+            proxy_set_header  X-Real-IP  $remote_addr;
+            proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+            proxy_connect_timeout   1s;
+            proxy_send_timeout   30s;
+			# 表示上游服务器响应超过三秒就返回
+            proxy_read_timeout   3s;
+            proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504 non_idempotent;
+        }
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+}
+
+proxy_connect_timeout 5s; 
+proxy_send_timeout 3s; 
+proxy_read_timeout 3s;
+proxy_next_upstream error timeout  http_500 non_idempotent;
+
+proxy_connect_timeout 5s; 
+proxy_send_timeout 6s; 
+proxy_read_timeout 6s;
+proxy_next_upstream error timeout  http_500 non_idempotent;
+
+==================
+通过proxy_next_upstream实现容灾和重复处理问题
+ngx_http_proxy_module 模块中包括proxy_next_upstream指令
+语法: proxy_next_upstream error | timeout | invalid_header | http_500 | http_502 | http_503 | http_504 |http_404 | off ...;
+默认值: proxy_next_upstream error timeout; 上下文: http, server, location
+
+其中：
+error   表示和后端服务器建立连接时，或者向后端服务器发送请求时，或者从后端服务器接收响应头时，出现错误。
+timeout   表示和后端服务器建立连接时，或者向后端服务器发送请求时，或者从后端服务器接收响应头时，出现超时。
+invalid_header   表示后端服务器返回空响应或者非法响应头
+http_500   表示后端服务器返回的响应状态码为500
+http_502   表示后端服务器返回的响应状态码为502
+http_503   表示后端服务器返回的响应状态码为503
+http_504   表示后端服务器返回的响应状态码为504
+http_404   表示后端服务器返回的响应状态码为404
+off   表示停止将请求发送给下一台后端服务器
+
+
+nginx 处理节点失效和恢复的触发条件
+nginx可以通过设置max_fails（最大尝试失败次数）和fail_timeout
+（失效时间，在到达最大尝试失败次数后，在fail_timeout的时间范围内节点被置为失效，除非所有节点都失效，否则该时间内，节点不进行恢复）
+对节点失败的尝试次数和失效时间进行设置，当超过最大尝试次数或失效时间未超过配置失效时间，
+则nginx会对节点状会置为失效状态，nginx不对该后端进行连接，直到超过失效时间或者所有节点都失效后，
+该节点重新置为有效，重新探测；
+
+===================
+对non-idempotent 这个单词，我不认识，然后想当然的理解为某个意思，于是就没有去认真看完这段话，觉得和问题没有关系。
+
+把这个配置加进去，变成： proxy_next_upstream error timeout http_500 non_idempotent; 问题终于解决了。
+
+这段话的意思是说，像 post, lock, patch 这种会对服务器造成不幂等的方法，默认是不进行重试的，如果一定要进行重试，则要加上这个配置。
+
+===================

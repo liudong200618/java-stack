@@ -1,0 +1,30 @@
+    # 配置不允许外部访问的接口,如果访问了将返回403
+    location /biz/v1/dsync {
+        return 403; 
+    }   
+    location /biz/v1/export/scpkey {
+        return 403;
+    }   
+    location /biz/v1/scp/key {
+        return 403; 
+    }    
+    
+    error_page 403 404 /404.html;
+    location /40x.html {
+       root    /data/webapps/root/;
+    }   
+    
+    error_page 419 /419.html;
+    location /419.html {
+       root    /data/webapps/root/;
+    }   
+    
+    error_page 519 /519.html;
+    location /519.html {
+       root    /data/webapps/root/;
+    }   
+
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+       root    /data/webapps/root/;
+    }   
