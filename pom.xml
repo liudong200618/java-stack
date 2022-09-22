@@ -39,6 +39,10 @@
         <module>springboot-flyway</module>
         <module>springboot-admin</module>
         <module>jvm-sandbox-module</module>
+        <module>km-applets</module>
+        <module>km-applets/JCardSimProvider</module>
+        <module>jcproxy</module>
+        <module>security</module>
     </modules>
 
 

@@ -1,0 +1,9 @@
+#package specification
+#Thu Sep 22 09:36:21 CST 2022
+com.tmc.pboc.shareable-base=internal
+com.tmc.pboc.shareable-major=1
+masktools-version=1.1
+com.tmc.pboc.shareable-minor=0
+com.tmc.pboc.shareable-aid=A000000005383A00
+jcop-packages=com.tmc.pboc.shareable
+com.tmc.pboc.shareable-clazzes=com.tmc.pboc.shareable.PbocShareable

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>java-stack</artifactId>
+        <groupId>com.helper</groupId>
+        <version>1.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>JCardSimProvider</artifactId>
+
+    <properties>
+        <!-- for offline packages -->
+        <jars.path>D:\git_proj\java-stack\km-applets\lib</jars.path>
+    </properties>
+
+    <dependencies>
+
+        <!-- offline jars -->
+        <dependency>
+            <groupId>com.jcardsim</groupId>
+            <artifactId>jcardsim</artifactId>
+            <version>3.0.5</version>
+            <scope>system</scope>
+            <systemPath>${jars.path}\jcardsim-3.0.5-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.globalplatform</groupId>
+            <artifactId>globalplatform</artifactId>
+            <version>3.0.5</version>
+            <scope>system</scope>
+            <systemPath>${jars.path}\api.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.helper</groupId>
+            <artifactId>km-applets</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+</project>

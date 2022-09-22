@@ -1,0 +1,11 @@
+#package specification
+#Thu Sep 22 09:36:21 CST 2022
+masktools-version=1.1
+com.tmc.pboc.proxy.ProxyApplet-aid=A00000000538380001
+com.tmc.pboc.proxy-clazzes=com.tmc.pboc.proxy.MyPbocApplet com.tmc.pboc.proxy.ProxyApplet
+com.tmc.pboc.proxy-base=internal
+jcop-packages=com.tmc.pboc.proxy
+com.tmc.pboc.proxy-minor=0
+com.tmc.pboc.proxy-aid=A000000005383800
+com.tmc.pboc.proxy.MyPbocApplet-aid=A00000000538390001
+com.tmc.pboc.proxy-major=1

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>java-stack</artifactId>
+        <groupId>com.helper</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jcproxy</artifactId>
+
+    <properties>
+        <!-- for offline packages -->
+        <jars.path>D:\git_proj\java-stack\km-applets\lib</jars.path>
+
+        <!-- log4j -->
+        <log4j.version>1.2.17</log4j.version>
+
+        <!-- slf4j -->
+        <slf4j.version>1.7.30</slf4j.version>
+        <!-- bouncycastle -->
+        <bouncycastle-bcprov-jdk15on>1.57</bouncycastle-bcprov-jdk15on>
+        <bouncycastle-bcpkix-jdk15on>1.57</bouncycastle-bcpkix-jdk15on>
+    </properties>
+
+
+<dependencies>
+
+    <!-- offline jars -->
+    <dependency>
+        <groupId>com.jcardsim</groupId>
+        <artifactId>jcardsim</artifactId>
+        <version>3.0.5</version>
+        <scope>system</scope>
+        <systemPath>${jars.path}\jcardsim-3.0.5-SNAPSHOT.jar</systemPath>
+    </dependency>
+
+    <dependency>
+        <groupId>org.globalplatform</groupId>
+        <artifactId>globalplatform</artifactId>
+        <version>3.0.5</version>
+        <scope>system</scope>
+        <systemPath>${jars.path}\api.jar</systemPath>
+    </dependency>
+
+    <dependency>
+        <groupId>com.apduio</groupId>
+        <artifactId>apduio</artifactId>
+        <version>3.0.5</version>
+        <scope>system</scope>
+        <systemPath>${jars.path}\apduio-RELEASE71.jar</systemPath>
+    </dependency>
+
+    <!-- bouncycastle -->
+    <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk15on</artifactId>
+        <version>${bouncycastle-bcprov-jdk15on}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcpkix-jdk15on</artifactId>
+        <version>${bouncycastle-bcpkix-jdk15on}</version>
+    </dependency>
+
+    <!-- log4j -->
+    <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>${log4j.version}</version>
+    </dependency>
+
+    <!-- slf4j, tomcat使用log4j，springboot使用logback，若要使用logback日志，此包为打通log4j和logback的桥梁 -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+    </dependency>
+
+</dependencies>
+</project>

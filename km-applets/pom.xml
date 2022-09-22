@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.helper</groupId>
+        <artifactId>java-stack</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>km-applets</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- for offline packages -->
+        <jars.path>D:\git_proj\java-stack\km-applets\lib</jars.path>
+    </properties>
+
+    <dependencies>
+
+        <!-- offline jars -->
+        <dependency>
+            <groupId>com.jcardsim</groupId>
+            <artifactId>jcardsim</artifactId>
+            <version>3.0.5</version>
+            <scope>system</scope>
+            <systemPath>${jars.path}\jcardsim-3.0.5-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.globalplatform</groupId>
+            <artifactId>globalplatform</artifactId>
+            <version>3.0.5</version>
+            <scope>system</scope>
+            <systemPath>${jars.path}\api.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.apduio</groupId>
+            <artifactId>apduio</artifactId>
+            <version>3.0.5</version>
+            <scope>system</scope>
+            <systemPath>${jars.path}\apduio-RELEASE71.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+</project>
